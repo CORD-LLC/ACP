@@ -1,0 +1,73 @@
+{
+  "acp": {
+    "version": "1.1.0",
+    "protocol": "acp",
+    "generated_at": "2026-04-11T16:00:00Z",
+    "envelope_id": "acp_1775946508_68284d",
+    "parent_envelope_id": null
+  },
+  "source": {
+    "provider": "ReferenceFleetOS",
+    "agent_type": "vehicle_agent",
+    "channel": "telematics"
+  },
+  "dealership": {
+    "id": "dealer_costa_mesa_001",
+    "name": "Pacific Jaguar Land Rover",
+    "dms_provider": "dealer_center"
+  },
+  "fleet": {
+    "operator_id": "example_operator_001",
+    "operator_name": "Example Fleet LLC",
+    "vehicle": {
+      "vin": "SALYB2EX3LA123456",
+      "year": 2023,
+      "make": "Jaguar",
+      "model": "I-PACE",
+      "odometer": 48247,
+      "autonomous_level": 4
+    },
+    "health": {
+      "severity": "predictive",
+      "systems_flagged": ["brake_pads_rear"],
+      "health_score": 71
+    }
+  },
+  "service_request": {
+    "id": "sr_1775946508_0372",
+    "type": "predictive_maintenance",
+    "stage": "dispatched",
+    "initiated_by": "vehicle_agent",
+    "last_updated": "2026-04-11T16:00:00Z",
+    "work_items": [
+      {
+        "op_code": "BRK-PAD-REAR",
+        "description": "Rear brake pad replacement",
+        "labor_hours": "1.5",
+        "parts_required": true,
+        "warranty_eligible": false
+      }
+    ],
+    "appointment": {
+      "status": "pending",
+      "requested_window_start": "2026-04-14T09:00:00Z",
+      "requested_window_end": "2026-04-16T17:00:00Z",
+      "drop_off_method": "self_driving"
+    },
+    "invoice": {
+      "status": "not_started"
+    }
+  },
+  "events": [
+    {
+      "type": "fleet.health.detected",
+      "timestamp": "2026-04-11T16:00:00Z",
+      "data": { "systems": ["brake_pads_rear"], "severity": "predictive" }
+    },
+    {
+      "type": "fleet.service_request.initiated",
+      "timestamp": "2026-04-11T16:00:00Z",
+      "data": { "service_request_id": "sr_1775946508_0372", "initiated_by": "vehicle_agent" }
+    }
+  ]
+}

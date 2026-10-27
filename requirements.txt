@@ -1,0 +1,4 @@
+# ACP public tooling has no hard third-party dependencies.
+# conformance_test.py runs on the Python 3.11+ standard library alone.
+# demo_vehicle_agent.py will use httpx if present, otherwise falls back to urllib.
+httpx>=0.27 ; extra == "demo"
