@@ -41,6 +41,25 @@ python demo_vehicle_agent.py --dry-run --verbose
 
 Both files run on the Python 3.11+ standard library. The demo will use `httpx` for live transmission if it is installed, and falls back to `urllib` otherwise.
 
+## Inventory Integrity extension (draft, ACP v1.2)
+
+A vehicle record changes as it moves from the DMS to the website, the ad catalogs, the marketplaces and the AI agents that now answer shoppers. The Inventory Integrity extension puts the checks in the open protocol instead of inside a vendor. An inventory envelope carries one canonical vehicle record, the sources it was compared against, the checks that ran, and an attestation bound to the exact record by SHA-256 hash. Surface reports say what is actually live on each downstream site and whether it matches.
+
+It also sets one rule for agents: no agent binds an offer to a record that is conflicted, expired or unattested. Two agents from two companies can verify the same hash and know they are negotiating over the same car at the same number.
+
+Spec: [extensions/inventory-integrity.md](extensions/inventory-integrity.md)
+
+```bash
+# Check an inventory envelope against the draft
+python inventory_conformance.py --file examples/sample_inventory_verified.json
+
+# A price conflict, reported honestly, is still conformant
+python inventory_conformance.py --file examples/sample_inventory_conflicted.json
+
+# Print the canonical record_hash of a unit, for producers building attestations
+python inventory_conformance.py --file my_envelope.json --print-hash
+```
+
 ## What is not in this repository
 
 This repository contains the protocol and its conformance tooling only. It does not contain an enforcement or orchestration engine. How a receiving system resolves identity, enforces consent, scores leads, routes to a CRM, or prices fleet work is an implementation concern, outside the scope of the open protocol. Producing a conformant envelope is all ACP asks of an implementation.

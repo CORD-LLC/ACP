@@ -1,0 +1,214 @@
+{
+  "acp": {
+    "version": "1.2.0",
+    "protocol": "acp",
+    "generated_at": "2026-11-03T17:30:00Z",
+    "envelope_id": "acp_1793727000_b93d21",
+    "parent_envelope_id": "acp_1793725200_a41f0c",
+    "mode": "delta"
+  },
+  "source": {
+    "provider": "ReferenceInventoryAgent",
+    "agent_type": "inventory_agent",
+    "channel": "inventory_feed"
+  },
+  "dealership": {
+    "id": "dealer_example_001",
+    "name": "Example Motors",
+    "dms_provider": "example_dms"
+  },
+  "inventory": {
+    "unit": {
+      "vin": "1FTFW1E86PFA00217",
+      "stock_number": "F24817",
+      "status": "in_stock",
+      "condition": "new",
+      "year": 2025,
+      "make": "Ford",
+      "model": "F-150",
+      "trim": "Lariat",
+      "drivetrain": "4wd",
+      "body_style": "pickup",
+      "doors": 4,
+      "exterior_color": "Agate Black",
+      "interior_color": "Black",
+      "price": {
+        "currency": "USD",
+        "advertised": "59995.00",
+        "msrp": "66480.00",
+        "effective_at": "2026-11-03T17:20:00Z",
+        "incentives": [
+          {
+            "program_id": "ford_retail_cash_25q4",
+            "amount": "2500.00",
+            "expires_at": "2026-12-01T07:59:59Z"
+          }
+        ]
+      },
+      "media": {
+        "photo_count": 34,
+        "photo_urls": [
+          "https://cdn.example-motors.com/f24817/1.jpg"
+        ]
+      },
+      "updated_at": "2026-11-03T17:20:00Z"
+    },
+    "cord": {
+      "object_type": "vehicle",
+      "object_id": "cord_veh_7c21e9",
+      "version": 8
+    }
+  },
+  "integrity": {
+    "sources": [
+      {
+        "system": "dms",
+        "provider": "example_dms",
+        "observed_at": "2026-11-03T16:58:00Z",
+        "record_hash": "sha256:49983b5224d3291b9dd4717a71361460f4dfba4a5e934ed1c9349fdf90104d3e"
+      },
+      {
+        "system": "oem_build",
+        "provider": "ford_build_data",
+        "observed_at": "2026-11-03T16:58:02Z",
+        "record_hash": "sha256:49983b5224d3291b9dd4717a71361460f4dfba4a5e934ed1c9349fdf90104d3e"
+      },
+      {
+        "system": "oem_incentives",
+        "provider": "ford_incentives",
+        "observed_at": "2026-11-03T16:58:03Z",
+        "record_hash": "sha256:49983b5224d3291b9dd4717a71361460f4dfba4a5e934ed1c9349fdf90104d3e"
+      },
+      {
+        "system": "dealer_website",
+        "provider": "example_website",
+        "observed_at": "2026-11-03T16:59:10Z",
+        "record_hash": "sha256:10ed01fdf97c2122b4fa499735652d6f9a74891a06c4d9999151a9e188c72251"
+      },
+      {
+        "system": "marketplace",
+        "provider": "example_marketplace",
+        "observed_at": "2026-11-03T17:28:00Z",
+        "record_hash": "sha256:10ed01fdf97c2122b4fa499735652d6f9a74891a06c4d9999151a9e188c72251"
+      }
+    ],
+    "checks": [
+      {
+        "id": "INT-VIN-VALID",
+        "status": "pass"
+      },
+      {
+        "id": "INT-BUILD-MATCH",
+        "status": "pass"
+      },
+      {
+        "id": "INT-PRICE-CONSISTENT",
+        "status": "fail",
+        "field": "price.advertised",
+        "expected": "59995.00",
+        "observed": {
+          "dms": "59995.00",
+          "dealer_website": "61995.00",
+          "marketplace": "61995.00"
+        }
+      },
+      {
+        "id": "INT-STATUS-CONSISTENT",
+        "status": "pass"
+      },
+      {
+        "id": "INT-PRICE-FRESH",
+        "status": "fail",
+        "field": "price.effective_at",
+        "expected": "2026-11-03T17:20:00Z",
+        "observed": {
+          "dealer_website": "2026-11-03T15:00:00Z",
+          "marketplace": "2026-11-03T15:00:00Z"
+        }
+      },
+      {
+        "id": "INT-MEDIA-PRESENT",
+        "status": "pass"
+      },
+      {
+        "id": "INT-INCENTIVE-VALID",
+        "status": "pass"
+      }
+    ],
+    "attestation": {
+      "status": "conflicted",
+      "record_hash": "sha256:49983b5224d3291b9dd4717a71361460f4dfba4a5e934ed1c9349fdf90104d3e",
+      "issued_at": "2026-11-03T17:30:00Z",
+      "expires_at": "2026-11-03T18:30:00Z",
+      "issuer": "dealer_example_001",
+      "signature": null
+    }
+  },
+  "surfaces": [
+    {
+      "surface": "dealer_website",
+      "url": "https://www.example-motors.com/new/ford/f-150/F24817",
+      "observed_at": "2026-11-03T17:29:00Z",
+      "observed": {
+        "status": "in_stock",
+        "advertised": "61995.00"
+      },
+      "matches": false,
+      "drift": [
+        "price.advertised"
+      ]
+    },
+    {
+      "surface": "marketplace",
+      "observed_at": "2026-11-03T17:28:00Z",
+      "observed": {
+        "status": "in_stock",
+        "advertised": "61995.00"
+      },
+      "matches": false,
+      "drift": [
+        "price.advertised"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "type": "inventory.unit.price_changed",
+      "timestamp": "2026-11-03T17:20:00Z",
+      "data": {
+        "from": "61995.00",
+        "to": "59995.00"
+      }
+    },
+    {
+      "type": "inventory.integrity.conflict_detected",
+      "timestamp": "2026-11-03T17:30:00Z",
+      "data": {
+        "check_ids": [
+          "INT-PRICE-CONSISTENT",
+          "INT-PRICE-FRESH"
+        ]
+      }
+    },
+    {
+      "type": "inventory.surface.drift_detected",
+      "timestamp": "2026-11-03T17:30:00Z",
+      "data": {
+        "surface": "dealer_website",
+        "drift": [
+          "price.advertised"
+        ]
+      }
+    },
+    {
+      "type": "inventory.surface.drift_detected",
+      "timestamp": "2026-11-03T17:30:00Z",
+      "data": {
+        "surface": "marketplace",
+        "drift": [
+          "price.advertised"
+        ]
+      }
+    }
+  ]
+}
