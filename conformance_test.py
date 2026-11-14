@@ -34,6 +34,13 @@ from typing import Any, Dict, List, Optional, Tuple
 CONFORMANCE_VERSION = "1.1.0"
 SPEC_URL = "https://acpspec.org/fleet"
 
+# source.agent_type, a MUST field. The published values, kept here so they can
+# be tested rather than living only on acpspec.org.
+LEAD_AGENT_TYPES = frozenset({
+    "sales_chat", "sales_voice", "inbound_voice", "service_text", "service_voice",
+})
+FLEET_AGENT_TYPES = frozenset({"vehicle_agent", "fleet_ops_agent"})
+
 
 # ── Result types ──────────────────────────────────────────────────────────────
 
@@ -337,14 +344,18 @@ def check_events(env: dict) -> List[ConformanceResult]:
 def check_source(env: dict) -> List[ConformanceResult]:
     results = []
 
-    r = ConformanceResult("SRC-001", "source.agent_type is vehicle_agent or fleet_ops_agent")
+    r = ConformanceResult("SRC-001", "source.agent_type is a published value for the envelope kind")
     source = env.get("source", {})
     agent_type = source.get("agent_type", "")
-    fleet_agent_types = {"vehicle_agent", "fleet_ops_agent"}
-    if agent_type in fleet_agent_types:
-        r.passed()
+    if "lead" in env and "fleet" not in env:
+        allowed, kind = LEAD_AGENT_TYPES, "lead"
     else:
-        r.warned(f"source.agent_type '{agent_type}', fleet envelopes should use 'vehicle_agent' or 'fleet_ops_agent'")
+        allowed, kind = FLEET_AGENT_TYPES, "fleet"
+    if agent_type in allowed:
+        r.passed(f"{kind} envelope, agent_type '{agent_type}'")
+    else:
+        r.failed(f"source.agent_type '{agent_type}' is not a published {kind} value; "
+                 f"expected one of: {', '.join(sorted(allowed))}")
     results.append(r)
 
     return results
