@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ACP v1.1 Fleet Commerce Extension — Vehicle Agent Demo
+ACP v1.1 Fleet Commerce Extension: Vehicle Agent Demo
 
 Simulates the complete machine-to-machine commerce loop:
 
@@ -171,7 +171,7 @@ def build_fleet_envelope(
         },
         "events": [
             {
-                "type": "fleet.health.detected",
+                "type": "vehicle_health_detected",
                 "timestamp": _ts(),
                 "data": {
                     "systems": ["brake_pads_rear", "cabin_air_filter"],
@@ -217,7 +217,7 @@ def dry_run(envelope: dict, verbose: bool = False):
         envelope_path = fh.name
 
     print("\n" + "=" * 60)
-    print("  ACP v1.1 FLEET ENVELOPE — CONFORMANCE CHECK")
+    print("  ACP v1.1 FLEET ENVELOPE: CONFORMANCE CHECK")
     print("=" * 60)
     print(f"  Envelope ID  : {envelope.get('acp', {}).get('envelope_id')}")
     print(f"  VIN          : {envelope.get('fleet', {}).get('vehicle', {}).get('vin')}")
@@ -272,7 +272,7 @@ def run_live_demo(
     verbose: bool,
 ):
     print("\n" + "="*60)
-    print("  ACP v1.1 FLEET COMMERCE — LIVE DEMO")
+    print("  ACP v1.1 FLEET COMMERCE: LIVE DEMO")
     print("  Machine-initiated service loop")
     print("="*60)
 
@@ -390,7 +390,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Dry run — validate envelope locally, no server needed
+  # Dry run: validate envelope locally, no server needed
   python demo_vehicle_agent.py --dry-run
 
   # Live demo against local server

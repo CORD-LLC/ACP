@@ -60,7 +60,7 @@
   },
   "events": [
     {
-      "type": "fleet.health.detected",
+      "type": "vehicle_health_detected",
       "timestamp": "2026-04-11T16:00:00Z",
       "data": { "systems": ["brake_pads_rear"], "severity": "predictive" }
     },

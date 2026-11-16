@@ -86,9 +86,9 @@ def check_acp_meta(env: dict) -> List[ConformanceResult]:
         if v == "1.1.0":
             r.passed()
         elif v.startswith("1."):
-            r.warned(f"version '{v}' is ACP v1.x but not 1.1.0 — fleet extension requires 1.1.0")
+            r.warned(f"version '{v}' is ACP v1.x but not 1.1.0, fleet extension requires 1.1.0")
         else:
-            r.failed(f"version '{v}' — fleet extension requires ACP v1.1.0")
+            r.failed(f"version '{v}', fleet extension requires ACP v1.1.0")
     results.append(r)
 
     r = ConformanceResult("ACP-003", "acp.envelope_id format")
@@ -141,7 +141,7 @@ def check_fleet_block(env: dict) -> List[ConformanceResult]:
     elif len(vin) == 17:
         r.failed(f"VIN '{vin}' contains non-alphanumeric characters")
     else:
-        r.failed(f"VIN '{vin}' is {len(vin)} characters — must be exactly 17")
+        r.failed(f"VIN '{vin}' is {len(vin)} characters, must be exactly 17")
     results.append(r)
 
     r = ConformanceResult("FLT-004", "fleet.health.severity is valid enum")
@@ -151,7 +151,7 @@ def check_fleet_block(env: dict) -> List[ConformanceResult]:
     if severity in valid_severities:
         r.passed()
     else:
-        r.failed(f"severity '{severity}' — must be one of: {', '.join(sorted(valid_severities))}")
+        r.failed(f"severity '{severity}', must be one of: {', '.join(sorted(valid_severities))}")
     results.append(r)
 
     r = ConformanceResult("FLT-005", "recall severity requires recall_campaign_ids",
@@ -184,7 +184,7 @@ def check_fleet_block(env: dict) -> List[ConformanceResult]:
         if al in [3, 4, 5]:
             r.passed(f"autonomous_level {al} is valid SAE level")
         else:
-            r.warned(f"autonomous_level {al} — expected SAE level 3, 4, or 5")
+            r.warned(f"autonomous_level {al}, expected SAE level 3, 4, or 5")
     else:
         r.skipped("autonomous_level not provided")
     results.append(r)
@@ -199,11 +199,11 @@ def check_exclusivity(env: dict) -> List[ConformanceResult]:
     has_fleet = "fleet" in env
     has_lead = "lead" in env
     if has_fleet and has_lead:
-        r.failed("Envelope contains both 'fleet' and 'lead' — these are mutually exclusive")
+        r.failed("Envelope contains both 'fleet' and 'lead', these are mutually exclusive")
     elif has_fleet:
         r.passed("fleet present, lead absent")
     elif has_lead:
-        r.skipped("lead envelope — fleet conformance not applicable")
+        r.skipped("lead envelope, fleet conformance not applicable")
     else:
         r.failed("Neither 'fleet' nor 'lead' block present")
     results.append(r)
@@ -237,7 +237,7 @@ def check_service_request(env: dict) -> List[ConformanceResult]:
     if stage in valid_stages:
         r.passed()
     else:
-        r.failed(f"stage '{stage}' — must be one of: {', '.join(sorted(valid_stages))}")
+        r.failed(f"stage '{stage}', must be one of: {', '.join(sorted(valid_stages))}")
     results.append(r)
 
     r = ConformanceResult("SR-004", "service_request.initiated_by is valid")
@@ -246,7 +246,7 @@ def check_service_request(env: dict) -> List[ConformanceResult]:
     if initiated in valid_agents:
         r.passed()
     else:
-        r.failed(f"initiated_by '{initiated}' — must be one of: {', '.join(sorted(valid_agents))}")
+        r.failed(f"initiated_by '{initiated}', must be one of: {', '.join(sorted(valid_agents))}")
     results.append(r)
 
     r = ConformanceResult("SR-005", "service_request.work_items present and non-empty")
@@ -287,7 +287,7 @@ def check_service_request(env: dict) -> List[ConformanceResult]:
         if pa_id.startswith("fpa_"):
             r.passed()
         else:
-            r.warned(f"fleet_pricing_agreement_id '{pa_id}' — recommended prefix is 'fpa_'")
+            r.warned(f"fleet_pricing_agreement_id '{pa_id}', recommended prefix is 'fpa_'")
     else:
         r.skipped("No pricing agreement on this envelope")
     results.append(r)
@@ -306,13 +306,13 @@ def check_events(env: dict) -> List[ConformanceResult]:
         r.failed("events must be a list")
     results.append(r)
 
-    r = ConformanceResult("EVT-002", "fleet.health.detected event present",
+    r = ConformanceResult("EVT-002", "vehicle_health_detected event present",
                           required=False)
     types = [e.get("type", "") for e in events]
-    if "fleet.health.detected" in types:
+    if "vehicle_health_detected" in types:
         r.passed()
     else:
-        r.warned("Recommended: include fleet.health.detected event in initial envelope")
+        r.warned("Recommended: include vehicle_health_detected event in initial envelope")
     results.append(r)
 
     r = ConformanceResult("EVT-003", "fleet.service_request.initiated event present",
@@ -344,7 +344,7 @@ def check_source(env: dict) -> List[ConformanceResult]:
     if agent_type in fleet_agent_types:
         r.passed()
     else:
-        r.warned(f"source.agent_type '{agent_type}' — fleet envelopes should use 'vehicle_agent' or 'fleet_ops_agent'")
+        r.warned(f"source.agent_type '{agent_type}', fleet envelopes should use 'vehicle_agent' or 'fleet_ops_agent'")
     results.append(r)
 
     return results
@@ -425,7 +425,7 @@ def print_report(results: List[ConformanceResult], summary: dict):
     else:
         print("  This implementation is CONFORMANT with ACP v1.1 Fleet.")
         if summary["advisory_warnings"] > 0:
-            print(f"  {summary['advisory_warnings']} advisory warning(s) — review before production.")
+            print(f"  {summary['advisory_warnings']} advisory warning(s), review before production.")
     print()
 
 
@@ -465,7 +465,7 @@ def load_from_url(url: str, token: str) -> dict:
             "invoice": {"status": "not_started"},
         },
         "events": [
-            {"type": "fleet.health.detected", "timestamp": datetime.now(timezone.utc).isoformat(), "data": {}},
+            {"type": "vehicle_health_detected", "timestamp": datetime.now(timezone.utc).isoformat(), "data": {}},
             {"type": "fleet.service_request.initiated", "timestamp": datetime.now(timezone.utc).isoformat(), "data": {}},
         ],
     }
@@ -524,7 +524,7 @@ Examples:
         print_report(results, summary)
     else:
         color = "\033[32m" if summary["conformant"] else "\033[31m"
-        print(f"\n  {color}{summary['verdict']}\033[0m  —  {summary['required_pass']}/{summary['required_tests']} required tests passed\n")
+        print(f"\n  {color}{summary['verdict']}\033[0m ,  {summary['required_pass']}/{summary['required_tests']} required tests passed\n")
 
     if args.report:
         report = {
