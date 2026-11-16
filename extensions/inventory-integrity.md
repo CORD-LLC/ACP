@@ -19,7 +19,12 @@ It also adds one rule for agents: no agent binds an offer to a record that is co
 
 ## Keywords
 
-MUST, MUST NOT, SHOULD, SHOULD NOT and MAY are used as defined in RFC 2119.
+The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL** in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
+
+**References**
+
+- [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC 2119, March 1997.
+- [RFC8174] Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words", BCP 14, RFC 8174, May 2017.
 
 ## Envelope shape
 
