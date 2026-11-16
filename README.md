@@ -1,4 +1,4 @@
-# ACP — Automotive Commerce Protocol
+# ACP: Automotive Commerce Protocol
 
 The open, JSON-native protocol for AI-powered automotive commerce. The successor to ADF-XML, built to model the full transaction lifecycle from first conversation through negotiation, financing, delivery, and post-sale events.
 
