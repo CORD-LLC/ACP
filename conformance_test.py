@@ -87,13 +87,13 @@ def check_acp_meta(env: dict) -> List[ConformanceResult]:
         r.passed()
     results.append(r)
 
-    r = ConformanceResult("ACP-002", "acp.version is 1.1.0")
+    r = ConformanceResult("ACP-002", "acp.version is 1.1.0 (fleet extension)")
     if acp:
         v = acp.get("version", "")
         if v == "1.1.0":
             r.passed()
         elif v.startswith("1."):
-            r.warned(f"version '{v}' is ACP v1.x but not 1.1.0, fleet extension requires 1.1.0")
+            r.warned(f"version '{v}' is ACP v1.x but not 1.1.0. Core envelopes use 1.0.0; fleet envelopes require 1.1.0")
         else:
             r.failed(f"version '{v}', fleet extension requires ACP v1.1.0")
     results.append(r)
