@@ -16,7 +16,9 @@ ACP is vendor-neutral and community-governed. The specification, schema, and the
 
 ## What is in this repository
 
-`conformance_test.py` is the conformance suite. Run it against any system that claims to produce valid ACP envelopes. A conformant implementation must pass every required check.
+`conformance_test.py` is the conformance suite for the v1.1 fleet extension. Run it against any system that claims to produce valid ACP fleet envelopes. A conformant implementation must pass every required check.
+
+Fleet envelopes carry `acp.version` `1.1.0`, and the suite requires it. Core ACP envelopes, the ones without the fleet extension, carry `1.0.0` as the core specification at [acpspec.org/specification](https://acpspec.org/specification) states. This suite does not validate core-only envelopes.
 
 ```bash
 # Validate a static envelope file
